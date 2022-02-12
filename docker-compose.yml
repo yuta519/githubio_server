@@ -1,0 +1,7 @@
+version: "3"
+services:
+  app:
+    build: . # specify Dockerfile
+    tty: true # persistent container
+    volumes:
+      - ./app:/go/src/app # mount local directory to container one
