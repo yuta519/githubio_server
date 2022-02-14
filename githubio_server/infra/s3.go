@@ -29,7 +29,6 @@ func FetchS3Objects(bucket_name string) []string {
 	}
 
 	var files []string
-
 	log.Println("first page results:")
 	for _, object := range output.Contents {
 		log.Printf("key=%s size=%d", aws.ToString(object.Key), object.Size)
@@ -38,10 +37,10 @@ func FetchS3Objects(bucket_name string) []string {
 	return files
 }
 
-func FetchUrlOfS3Object(bucket_name string, filename string) string {
+func FetchUrlOfS3Object(bucket string, filename string) string {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatal(err)
 	}
-	return "https://" + bucket_name + ".s3." + cfg.Region + ".amazonaws.com/" + filename
+	return "https://" + bucket + ".s3." + cfg.Region + ".amazonaws.com/" + filename
 }
