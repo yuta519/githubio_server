@@ -1,13 +1,12 @@
 package blogs
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/yuta519/githubio_server/repositories"
 )
 
 func FetchBlogs(w http.ResponseWriter, r *http.Request) {
-	blogs := repositories.FetchBlogs()
-	fmt.Println(blogs)
+	json.NewEncoder(w).Encode(repositories.FetchBlogs())
 }
