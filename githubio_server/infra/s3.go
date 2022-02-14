@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-func FetchS3Objects(bucket_name string) {
+func FetchS3Objects(bucket_name string) []string {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatal(err)
@@ -23,14 +23,25 @@ func FetchS3Objects(bucket_name string) {
 	// Get the first page of results for ListObjectsV2 for a bucket
 	output, err := client.ListObjectsV2(context.TODO(), &s3.ListObjectsV2Input{
 		Bucket: aws.String(bucket_name),
-		// Bucket: aws.String("md-host-bucket"),
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	var files []string
+
 	log.Println("first page results:")
 	for _, object := range output.Contents {
 		log.Printf("key=%s size=%d", aws.ToString(object.Key), object.Size)
+		files = append(files, aws.ToString(object.Key))
 	}
+	return files
+}
+
+func FetchUrlOfS3Object(bucket_name string, filename string) string {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		log.Fatal(err)
+	}
+	return "https://" + bucket_name + ".s3." + cfg.Region + ".amazonaws.com/" + filename
 }
