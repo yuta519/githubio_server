@@ -3,5 +3,12 @@ services:
   app:
     build: . # specify Dockerfile
     tty: true # persistent container
+    env_file:
+      - .env
+    environment:
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_DEFAULT_OUTPUT: json
     volumes:
       - ./app:/go/src/app # mount local directory to container one
+    ports:
+      - "8001:8000"

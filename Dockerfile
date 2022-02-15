@@ -111,4 +111,16 @@ RUN set -eux; \
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
-WORKDIR $GOPATH
+# WORKDIR $GOPATH
+
+WORKDIR /opt
+
+# Install aws cli
+RUN apk --no-cache add binutils curl
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+
+# Copy Go project and run
+COPY ./githubio_server /opt/
+CMD ["go", "run", "/opt/main.go"]
