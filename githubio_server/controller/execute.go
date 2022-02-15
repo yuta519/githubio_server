@@ -1,6 +1,7 @@
 package githubio_server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -13,5 +14,6 @@ func Execute() {
 	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	// 	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	// })
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	port := "8000"
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
