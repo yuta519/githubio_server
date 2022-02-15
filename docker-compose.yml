@@ -11,4 +11,4 @@ services:
     volumes:
       - ./app:/go/src/app # mount local directory to container one
     ports:
-      - "8001:8000"
+      - "8000:8000"
