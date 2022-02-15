@@ -3,21 +3,17 @@ package repositories
 import (
 	"path/filepath"
 
+	"github.com/yuta519/githubio_server/domain"
 	"github.com/yuta519/githubio_server/infra"
 )
 
-type Blog struct {
-	Title string `json:"title"`
-	Url   string `json:"url"`
-}
-
-func FetchBlogs() []Blog {
-	var blogs []Blog
+func FetchBlogs() []domain.Blog {
+	var blogs []domain.Blog
 	blog_files := infra.FetchS3Objects("md-host-bucket")
 	for _, blog_file := range blog_files {
 		blogs = append(
 			blogs,
-			Blog{
+			domain.Blog{
 				Title: getFileNameWithoutExtension(blog_file),
 				Url:   infra.FetchUrlOfS3Object("md-host-bucket", blog_file),
 			},
