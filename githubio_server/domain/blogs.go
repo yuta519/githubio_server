@@ -1,11 +1,6 @@
-package githubio_server
+package domain
 
-import (
-	"net/http"
-
-	"github.com/yuta519/githubio_server/infra"
-)
-
-func FetchBlogs(w http.ResponseWriter, r *http.Request) {
-	infra.FetchS3Objects("md-host-bucket")
+type Blog struct {
+	Title string `json:"title"`
+	Url   string `json:"url"`
 }
