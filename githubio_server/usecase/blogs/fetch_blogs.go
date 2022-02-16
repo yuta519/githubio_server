@@ -1,12 +1,21 @@
 package blogs
 
 import (
-	"encoding/json"
-	"net/http"
-
+	"github.com/yuta519/githubio_server/domain"
 	"github.com/yuta519/githubio_server/repositories"
 )
 
-func FetchBlogs(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(repositories.FetchBlogs())
+func FetchBlogs() []domain.Blog {
+	var blogs []domain.Blog
+	blog_files := repositories.FetchBlogFiles()
+	for _, blog_file := range blog_files {
+		blogs = append(
+			blogs,
+			domain.Blog{
+				Title: repositories.GetFileNameWithoutExtension(blog_file),
+				Url:   repositories.GgetUrlOfBlogFile(blog_file),
+			},
+		)
+	}
+	return blogs
 }
