@@ -1,9 +1,9 @@
 package main
 
 import (
-	githubio_server "github.com/yuta519/githubio_server/controller"
+	"github.com/yuta519/githubio_server/cmd"
 )
 
 func main() {
-	githubio_server.Execute()
+	cmd.Execute()
 }
