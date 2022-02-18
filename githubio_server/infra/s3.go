@@ -1,14 +1,16 @@
 package infra
 
-// package githubio_server
-
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
 func FetchS3Objects(bucket_name string) []string {
@@ -29,7 +31,6 @@ func FetchS3Objects(bucket_name string) []string {
 	}
 
 	var files []string
-	log.Println("first page results:")
 	for _, object := range output.Contents {
 		log.Printf("key=%s size=%d", aws.ToString(object.Key), object.Size)
 		files = append(files, aws.ToString(object.Key))
@@ -43,4 +44,26 @@ func FetchUrlOfS3Object(bucket string, filename string) string {
 		log.Fatal(err)
 	}
 	return "https://" + bucket + ".s3." + cfg.Region + ".amazonaws.com/" + filename
+}
+
+func UploadS3Object(filename string) {
+	// The session the S3 Uploader will use
+	sess := session.Must(session.NewSession())
+	// Create an uploader with the session and default options
+	uploader := s3manager.NewUploader(sess)
+	f, err := os.Open(filename)
+	if err != nil {
+		fmt.Errorf("failed to open file %q, %v", filename, err)
+	}
+
+	// Upload the file to S3.
+	result, err := uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String(os.Getenv("S3_BUCKET_NAME")),
+		Key:    aws.String(filename),
+		Body:   f,
+	})
+	if err != nil {
+		fmt.Errorf("failed to upload file, %v", err)
+	}
+	fmt.Printf("file uploaded to, %s\n", result.Location)
 }
