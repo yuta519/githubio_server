@@ -53,7 +53,7 @@ func UploadS3Object(filename string) {
 	uploader := s3manager.NewUploader(sess)
 	f, err := os.Open(filename)
 	if err != nil {
-		fmt.Errorf("failed to open file %q, %v", filename, err)
+		log.Fatalf("failed to open file %q, %v", filename, err)
 	}
 
 	// Upload the file to S3.
@@ -63,7 +63,7 @@ func UploadS3Object(filename string) {
 		Body:   f,
 	})
 	if err != nil {
-		fmt.Errorf("failed to upload file, %v", err)
+		log.Fatalf("failed to upload file, %v", err)
 	}
 	fmt.Printf("file uploaded to, %s\n", result.Location)
 }

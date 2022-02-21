@@ -23,4 +23,5 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.14.0 // indirect
 	github.com/aws/smithy-go v1.10.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/yuta519/notion_api v0.0.0-20220212020746-d970a657d9c3
 )

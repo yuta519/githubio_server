@@ -7,7 +7,7 @@ import (
 )
 
 func Execute() {
-	default_port := "8000"
+	default_port := "8001"
 	log.Printf("A server is starting on %s/TCP.", default_port)
 	config.Router(default_port)
 }
