@@ -13,6 +13,15 @@ func TestPing(t *testing.T) {
 
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
-
 	ts.Config.Handler.ServeHTTP(w, r)
+
+	expectedResponse := "Ping, \"/\""
+
+	if w.Code != http.StatusOK {
+		t.Errorf("got %d", w.Code)
+	}
+
+	if response := w.Body.String(); response != expectedResponse {
+		t.Errorf("got %s", response)
+	}
 }
