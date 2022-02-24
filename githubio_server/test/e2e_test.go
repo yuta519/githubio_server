@@ -1,22 +1,18 @@
 package test
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
-	"github.com/jarcoal/httpmock"
+	"github.com/yuta519/githubio_server/controller/ping"
 )
 
-func TestFetchPages(t *testing.T) {
-	// Mock Notion API response
-	httpmock.Activate()
-	defer httpmock.DeactivateAndReset()
-	httpmock.RegisterResponder(
-		"GET",
-		"http://localhost:3000/",
-		httpmock.NewBytesResponder(
-			200,
-			[]byte("Ping, \"/\"")),
-	)
+func TestPing(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(ping.Ping))
 
-	// To test a key in object page
+	r := httptest.NewRequest(http.MethodGet, "/", nil)
+	w := httptest.NewRecorder()
+
+	ts.Config.Handler.ServeHTTP(w, r)
 }
