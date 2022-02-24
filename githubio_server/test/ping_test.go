@@ -10,7 +10,6 @@ import (
 
 func TestPing(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(ping.Ping))
-
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 	ts.Config.Handler.ServeHTTP(w, r)
@@ -18,10 +17,9 @@ func TestPing(t *testing.T) {
 	expectedResponse := "Ping, \"/\""
 
 	if w.Code != http.StatusOK {
-		t.Errorf("got %d", w.Code)
+		t.Errorf("Expected: %d, got %d", http.StatusOK, w.Code)
 	}
-
 	if response := w.Body.String(); response != expectedResponse {
-		t.Errorf("got %s", response)
+		t.Errorf("Expected: %s, got %s", expectedResponse, response)
 	}
 }
